@@ -1,14 +1,11 @@
-package cryptography.caesarcipher;
+package cryptography.substitutioncipher;
 
 import cryptography.Converter;
 import cryptography.Cryptography;
 
-/**
- * Caesar Cipher is an encryption method
- *
- * @see <a href="https://en.wikipedia.org/wiki/Caesar_cipher">Wikipedia</a>
- */
-public class CaesarCipher implements Cryptography {
+import java.util.ArrayList;
+
+public class SubstitutionCipher implements Cryptography {
 
     /**
      * Encrypt a plain text to cipher text
@@ -18,11 +15,12 @@ public class CaesarCipher implements Cryptography {
      */
     @Override
     public String encrypt(String plainText, String key) {
-        StringBuilder cipherText = new StringBuilder();
         char[] pt = plainText.toCharArray();
+        char[] k = key.toCharArray();
+        StringBuilder cipherText = new StringBuilder();
         for (char c : pt) {
             if (Character.isAlphabetic(c)) {
-                cipherText.append(Converter.numberToAlphabet((Converter.alphabetToNumber(Character.toUpperCase(c)) + Integer.parseInt(key)) % 22));
+                cipherText.append(k[Converter.alphabetToNumber(Character.toUpperCase(c))]);
             } else {
                 cipherText.append(c);
             }
@@ -38,11 +36,15 @@ public class CaesarCipher implements Cryptography {
      */
     @Override
     public String decrypt(String cipherText, String key) {
-        StringBuilder plainText = new StringBuilder();
         char[] ct = cipherText.toCharArray();
+        ArrayList<Character> k = new ArrayList<>();
+        for (char c : key.toCharArray()) {
+            k.add(c);
+        }
+        StringBuilder plainText = new StringBuilder();
         for (char c : ct) {
             if (Character.isAlphabetic(c)) {
-                plainText.append(Converter.numberToAlphabet((Converter.alphabetToNumber(c) - Integer.parseInt(key)) % 22));
+                plainText.append(Converter.numberToAlphabet(k.indexOf(c)));
             } else {
                 plainText.append(c);
             }
