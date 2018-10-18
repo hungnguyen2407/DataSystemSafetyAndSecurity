@@ -1,6 +1,50 @@
-package cryptography;
+import java.util.ArrayList;
+import java.util.Scanner;
 
-public class Converter {
+public class SubstitutionCipher {
+
+    /**
+     * Encrypt a plain text to cipher text
+     *
+     * @param plainText : the plain text to encrypt
+     * @param key       : the key use to encrypt
+     */
+    public static String encrypt(String plainText, String key) {
+        char[] pt = plainText.toCharArray();
+        char[] k = key.toCharArray();
+        StringBuilder cipherText = new StringBuilder();
+        for (char c : pt) {
+            if (Character.isAlphabetic(c)) {
+                cipherText.append(k[alphabetToNumber(Character.toUpperCase(c))]);
+            } else {
+                cipherText.append(c);
+            }
+        }
+        return cipherText.toString();
+    }
+
+    /**
+     * Decrypt a cipher text to plain text
+     *
+     * @param cipherText : the cipher text to decrypt
+     * @param key        : the key use to decrypt
+     */
+    public static String decrypt(String cipherText, String key) {
+        char[] ct = cipherText.toCharArray();
+        ArrayList<Character> k = new ArrayList<>();
+        for (char c : key.toCharArray()) {
+            k.add(c);
+        }
+        StringBuilder plainText = new StringBuilder();
+        for (char c : ct) {
+            if (Character.isAlphabetic(c)) {
+                plainText.append(numberToAlphabet(k.indexOf(c)));
+            } else {
+                plainText.append(c);
+            }
+        }
+        return plainText.toString();
+    }
 
     /**
      * Convert Vietnamese alphabet to number
@@ -111,4 +155,18 @@ public class Converter {
         }
     }
 
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        StringBuilder result = new StringBuilder();
+        int testCase = Integer.parseInt(sc.nextLine());
+        for (int i = 0; i < testCase; i++) {
+            String key;
+            String plainText;
+            key = sc.nextLine();
+            plainText = sc.nextLine();
+
+            result.append(encrypt(plainText, key)).append("\n");
+        }
+        System.out.println(result.toString());
+    }
 }
