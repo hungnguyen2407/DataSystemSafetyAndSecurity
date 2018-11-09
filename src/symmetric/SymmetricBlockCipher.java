@@ -1,3 +1,5 @@
+package symmetric;
+
 import java.util.Scanner;
 
 public class SymmetricBlockCipher {
